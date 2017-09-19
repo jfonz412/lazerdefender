@@ -9,13 +9,7 @@ public class PlayerController : MonoBehaviour {
 	float xmax;
 	
 	void Start(){
-		//set camera distances
-		//distance between player and the camera
-		float distance = transform.position.z - Camera.main.transform.position.z;
-		Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0,0,distance)); //bottom left
-		Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1,0,distance)); //bottom right
-		xmin = leftMost.x + padding;
-		xmax = rightMost.x - padding;
+		ClampPlayer();
 	}
 	
 	// Update is called once per frame
@@ -34,5 +28,16 @@ public class PlayerController : MonoBehaviour {
 		//clamp player's x position
 		float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+	}
+	
+	void ClampPlayer(){
+		//This makes it so the ship will not leave the camera.
+		//This function simply sets the camera's viewport as variables we can use to clamp the player
+		//distance between player and the camera
+		float distance = transform.position.z - Camera.main.transform.position.z;
+		Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0,0,distance)); //bottom left
+		Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1,0,distance)); //bottom right
+		xmin = leftMost.x + padding;
+		xmax = rightMost.x - padding;
 	}
 }
