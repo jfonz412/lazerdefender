@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public GameObject basicLazer;
+	public float health = 300f;
 	public float speed = 10.0f;
 	public float lazerSpeed;
 	public float fireRate = 0.35f; //lazer per second of having space held down
@@ -24,6 +25,19 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (Input.GetKeyUp(KeyCode.Space)){
 			CancelInvoke("FireLazer");
+		}
+	}
+	
+	void OnTriggerEnter2D(Collider2D col){
+		// check if col has Projectile script/component
+		Projectile lazer = col.gameObject.GetComponent<Projectile>();
+		if (lazer){
+			health -= lazer.GetDamage();
+			if (health <= 0){
+				Destroy(gameObject);
+			}
+			lazer.Hit ();
+			Debug.Log ("Hit by projectile");
 		}
 	}
 	
