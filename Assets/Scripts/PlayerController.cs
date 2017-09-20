@@ -2,7 +2,10 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+	public GameObject basicLazer;
 	public float speed = 10.0f;
+	public float lazerSpeed;
+	public float fireRate = 0.35f; //lazer per second of having space held down
 	
 	float padding = 0.5f;
 	float xmin;
@@ -15,6 +18,13 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		MoveShip();
+		if (Input.GetKeyDown(KeyCode.Space)){
+			//middle argument is initial delay before first call, if zero you get a bug
+			InvokeRepeating("FireLazer", 0.000001f, fireRate);
+		}
+		if (Input.GetKeyUp(KeyCode.Space)){
+			CancelInvoke("FireLazer");
+		}
 	}
 	
 	//transform does not need to be defined apprently
@@ -39,5 +49,11 @@ public class PlayerController : MonoBehaviour {
 		Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1,0,distance)); //bottom right
 		xmin = leftMost.x + padding;
 		xmax = rightMost.x - padding;
+	}
+	
+	void FireLazer(){
+		Vector3 lazerPos = new Vector3(transform.position.x, transform.position.y + 0.7f, transform.position.z);
+		GameObject lazer = Instantiate(basicLazer, lazerPos, Quaternion.identity) as GameObject;
+		lazer.rigidbody2D.velocity = new Vector3(0,lazerSpeed,0);
 	}
 }
