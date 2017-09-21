@@ -24,6 +24,11 @@ public class EnemySpawner : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		MoveFormation();
+		
+		if(FormationDefeated()){
+			Debug.Log("Formation Defeated");
+			SpawnEnemies();
+		}
 	}
 	
 	void GetCameraSpace(){
@@ -65,5 +70,16 @@ public class EnemySpawner : MonoBehaviour {
 		}else if (rightEdgeOfFormation > xmax){
 			movingRight = false;
 		}
+	}
+	
+	
+	bool FormationDefeated(){
+		//transforms are what keeps the child/parent relationship
+		foreach(Transform childPostionGameObject in transform){
+			if (childPostionGameObject.childCount > 0){
+				return false;
+			}
+		}
+		return true;
 	}
 }
