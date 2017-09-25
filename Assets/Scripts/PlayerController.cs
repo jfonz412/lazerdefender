@@ -3,6 +3,10 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public GameObject basicLazer;
+	public AudioClip lazerSound;
+	public AudioClip damagedSound;
+	public AudioClip playerKilledSound;
+	
 	public float health = 300f;
 	public float speed = 10.0f;
 	public float lazerSpeed;
@@ -34,10 +38,11 @@ public class PlayerController : MonoBehaviour {
 		if (lazer){
 			health -= lazer.GetDamage();
 			if (health <= 0){
+				AudioSource.PlayClipAtPoint(playerKilledSound, transform.position,10.0f);
 				Destroy(gameObject);
 			}
 			lazer.Hit ();
-			Debug.Log ("Hit by projectile");
+			AudioSource.PlayClipAtPoint(playerKilledSound, transform.position,1.0f);
 		}
 	}
 	
@@ -69,5 +74,6 @@ public class PlayerController : MonoBehaviour {
 		Vector3 lazerPos = new Vector3(transform.position.x, transform.position.y + 0.7f, transform.position.z);
 		GameObject lazer = Instantiate(basicLazer, lazerPos, Quaternion.identity) as GameObject;
 		lazer.rigidbody2D.velocity = new Vector3(0,lazerSpeed,0);
+		AudioSource.PlayClipAtPoint(lazerSound, transform.position,1.0f);
 	}
 }

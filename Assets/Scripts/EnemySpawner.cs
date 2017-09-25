@@ -3,6 +3,7 @@ using System.Collections;
 
 public class EnemySpawner : MonoBehaviour {
 	public GameObject enemyPrefab;
+	public AudioClip flyIn;
 	public float width = 10.0f;
 	public float height = 5.0f;
 	public float speed = 1.0f;
@@ -52,6 +53,7 @@ public class EnemySpawner : MonoBehaviour {
 			GameObject enemy = Instantiate(enemyPrefab, child.transform.position, Quaternion.identity) as GameObject;
 			//instantiate enemy as child of this child-transform (Position object)
 			enemy.transform.parent = child;
+			AudioSource.PlayClipAtPoint(flyIn, transform.position, 1.0f);
 		}
 	}
 	
@@ -63,6 +65,7 @@ public class EnemySpawner : MonoBehaviour {
 		}
 		if(NextOpenPostion()){
 			Invoke ("SpawnUntilFull", spawnDelay);
+			AudioSource.PlayClipAtPoint(flyIn, transform.position, 3.0f);
 		}
 	}
 	

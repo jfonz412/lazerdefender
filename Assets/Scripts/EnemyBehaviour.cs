@@ -3,6 +3,9 @@ using System.Collections;
 
 public class EnemyBehaviour : MonoBehaviour {
 	public GameObject enemyLazer;
+	public AudioClip lazerSound;
+	public AudioClip enemyKilledSound;
+	
 	public float lazerSpeed; 
 	public float health = 150;
 	public float shotsPerSecond = 0.5f;
@@ -20,11 +23,9 @@ public class EnemyBehaviour : MonoBehaviour {
 		if (lazer){
 			health -= lazer.GetDamage();
 			if (health <= 0){
-				scoreKeeper.Score(scoreValue);
-				Destroy(gameObject);
+				Die();
 			}
 			lazer.Hit ();
-			Debug.Log ("Hit by projectile");
 		}
 	}
 	
@@ -39,5 +40,12 @@ public class EnemyBehaviour : MonoBehaviour {
 		Vector3 lazerPos = new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z);
 		GameObject lazer = Instantiate(enemyLazer, lazerPos, Quaternion.identity) as GameObject;
 		lazer.rigidbody2D.velocity = new Vector3(0,-lazerSpeed,0);
+		AudioSource.PlayClipAtPoint(lazerSound, transform.position,1.0f);
+	}
+	
+	void Die(){
+		scoreKeeper.Score(scoreValue);
+		AudioSource.PlayClipAtPoint(enemyKilledSound, transform.position,1.0f);
+		Destroy(gameObject);
 	}
 }
