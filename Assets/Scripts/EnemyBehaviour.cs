@@ -37,8 +37,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 	
 	void FireLazer(){
-		Vector3 lazerPos = new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z);
-		GameObject lazer = Instantiate(enemyLazer, lazerPos, Quaternion.identity) as GameObject;
+		GameObject lazer = Instantiate(enemyLazer, transform.position, Quaternion.identity) as GameObject;
 		lazer.rigidbody2D.velocity = new Vector3(0,-lazerSpeed,0);
 		AudioSource.PlayClipAtPoint(lazerSound, transform.position,1.0f);
 	}
