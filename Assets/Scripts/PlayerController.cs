@@ -38,8 +38,7 @@ public class PlayerController : MonoBehaviour {
 		if (lazer){
 			health -= lazer.GetDamage();
 			if (health <= 0){
-				AudioSource.PlayClipAtPoint(playerKilledSound, transform.position,10.0f);
-				Destroy(gameObject);
+				Die();
 			}
 			lazer.Hit ();
 			AudioSource.PlayClipAtPoint(playerKilledSound, transform.position,1.0f);
@@ -75,5 +74,13 @@ public class PlayerController : MonoBehaviour {
 		GameObject lazer = Instantiate(basicLazer, lazerPos, Quaternion.identity) as GameObject;
 		lazer.rigidbody2D.velocity = new Vector3(0,lazerSpeed,0);
 		AudioSource.PlayClipAtPoint(lazerSound, transform.position,1.0f);
+	}
+	
+	void Die(){
+		// Get the LevelManager script from the LevelManager object
+		LevelManager lvlManager = GameObject.Find ("LevelManager").GetComponent<LevelManager>();
+		AudioSource.PlayClipAtPoint(playerKilledSound, transform.position,10.0f);
+		lvlManager.LoadLevel("Win Screen");
+		Destroy(gameObject);
 	}
 }
